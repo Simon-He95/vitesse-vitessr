@@ -1,6 +1,4 @@
 {
   "svn.ignoreMissingSvnWarning": true,
-  "cSpell.words": [
-    "pinia"
-  ]
+  "cSpell.words": ["pinia"]
 }

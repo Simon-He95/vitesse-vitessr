@@ -1,26 +1,14 @@
-import { createRouter, createWebHistory, createMemoryHistory } from 'vue-router';
+import routes from 'virtual:generated-pages'
+import { createMemoryHistory, createRouter, createWebHistory } from 'vue-router'
 
 export default function () {
-  const routerHistory = import.meta.env.SSR === false ? createWebHistory() : createMemoryHistory();
+  const routerHistory
+    = import.meta.env.SSR === false
+      ? createWebHistory(import.meta.env.BASE_URL)
+      : createMemoryHistory(import.meta.env.BASE_URL)
 
   return createRouter({
     history: routerHistory,
-    routes: [
-      {
-        path: '/',
-        name: 'index',
-        component: () => import('@/views')
-      },
-      {
-        path: '/user',
-        name: 'user',
-        component: () => import('@/views/user.vue')
-      },
-      {
-        path: '/market',
-        name: 'market',
-        component: () => import('@/views/market')
-      }
-    ]
-  });
+    routes,
+  })
 }

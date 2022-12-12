@@ -1,55 +1,47 @@
-import path from 'path';
-import { UserConfig } from 'vite';
-import eslintPlugin from 'vite-plugin-eslint';
-import vuePlugin from '@vitejs/plugin-vue';
-import Components from 'unplugin-vue-components/vite';
-import vueJsxPlugin from '@vitejs/plugin-vue-jsx';
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
-import visualizer from 'rollup-plugin-visualizer';
-import unocss from 'unocss/vite';
-import presetMini from '@unocss/preset-mini';
-import AutoImport from 'unplugin-auto-import/vite';
+import path from 'path'
+import type { UserConfig } from 'vite'
+import Vue from '@vitejs/plugin-vue'
+import Components from 'unplugin-vue-components/vite'
+import visualizer from 'rollup-plugin-visualizer'
+import AutoImport from 'unplugin-auto-import/vite'
+import Pages from 'vite-plugin-pages'
+import Unocss from 'unocss/vite'
+import DefineOptions from 'unplugin-vue-define-options/vite'
 
-export default ({ command }) => {
+export default ({ command }: any) => {
   const config: UserConfig = {
     plugins: [
-      vuePlugin(),
-      vueJsxPlugin(),
-      eslintPlugin({
-        cache: false,
-        include: ['src/**/*.vue', 'src/**/*.ts', 'src/**/*.tsx']
+      Vue({
+        reactivityTransform: true,
       }),
-      unocss({
-        presets: [presetMini()]
-      }),
+      DefineOptions(),
+      Unocss(),
       Components({
-        resolvers: [ElementPlusResolver({ ssr: true })],
-        directoryAsNamespace: true
+        dts: true,
       }),
+      Pages(),
       AutoImport({
-        imports: ['vue', 'vue-router', 'pinia'],
-        resolvers: [ElementPlusResolver({ ssr: true })]
-      })
+        imports: ['vue', 'vue-router', 'vue/macros', '@vueuse/core', 'pinia'],
+        dts: true,
+      }),
     ],
-    server: {
-      port: 80
-    },
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, 'src')
-      }
-    }
-  };
+        '@': path.resolve(__dirname, 'src'),
+        '~/': `${path.resolve(__dirname, 'src')}/`,
+      },
+    },
+  }
 
   if (command === 'build') {
     config.plugins.push(
       visualizer({
         open: false,
         gzipSize: true,
-        brotliSize: true
-      })
-    );
+        brotliSize: true,
+      }),
+    )
   }
 
-  return config;
-};
+  return config
+}

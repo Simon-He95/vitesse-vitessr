@@ -1,12 +1,12 @@
-import { defineStore } from 'pinia';
+import { defineStore } from 'pinia'
 
 interface IUser {
-  name: string;
-  userId: string;
-  token: string;
+  name: string
+  userId: string
+  token: string
 }
 export interface IUserState {
-  userInfo: IUser;
+  userInfo: IUser
 }
 
 export const useUser = defineStore('user', {
@@ -15,16 +15,16 @@ export const useUser = defineStore('user', {
       userInfo: {
         name: '',
         userId: '',
-        token: ''
-      }
-    };
+        token: '',
+      },
+    }
   },
   actions: {
     updateUser(info: IUser) {
-      this.userInfo = info;
+      this.userInfo = info
     },
     updateToken(token: string) {
-      this.userInfo.token = token;
-    }
-  }
-});
+      this.userInfo.token = token
+    },
+  },
+})
